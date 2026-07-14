@@ -11,13 +11,14 @@ class AlreadyInWatchlistError(Exception):
     """Raised when a film is already in the user's watchlist."""
     pass
 
-def add_to_watchlist(user_id, film_id):
+def add_to_watchlist(user_id, film_id, public=False):
     """
     Save a film to a user's watchlist.
 
     Args:
         user_id (str): UUID of the user.
         film_id (int): ID of the film. (Note: integer — pre-refactor)
+        public (bool, optional): Whether the watchlist entry is public. Defaults to False.
 
     Returns:
         WatchlistEntry: The newly created entry.
@@ -39,7 +40,7 @@ def add_to_watchlist(user_id, film_id):
     if film is None:
         raise FilmNotFoundError(f"No film found with id '{film_id}'")
 
-    entry = WatchlistEntry(user_id=user_id, film_id=film_id)
+    entry = WatchlistEntry(user_id=user_id, film_id=film_id, public=public)
     db.session.add(entry)
     db.session.commit()
     return entry
@@ -59,7 +60,7 @@ def get_watchlist(user_id):
         WatchlistEntry.query
         .filter_by(user_id=user_id)
         .join(Film)
-        .order_by(Film.title.asc())
+        .order_by(WatchlistEntry.date_added.desc())
         .all()
     )
 
