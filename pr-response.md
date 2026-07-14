@@ -15,6 +15,8 @@
 | I'd prefer watchlists to default to "date added" order rather than alphabetical. Most users want to see what they added recently. I'm open to discussion if you see it differently — but let's make a decision and document it.                                                                                | Sort Order         | Write an argument for your chosen sort order (Date Added vs. Alphabetical).              |
 | A refactor merged to `main` that changed film IDs from integers to UUIDs. Your watchlist code still references integer IDs. Please rebase on `main` and update accordingly.                                                                                                                                    | Rebase             | Rebase on `main` to resolve the conflict caused by the switch from Integer IDs to UUIDs. |
 
+## PR Description
+
 ### Comment 1 — Rename
 
 **What I did:**
@@ -76,10 +78,10 @@ Checked the service implementation and ran the test suite to ensure no syntax er
 ### Comment 6 — Rebase
 
 **What conflicted:**
+When rebasing on `origin/main`, `models.py` had a merge conflict because `main` had updated film IDs from integers to UUID strings, but our branch was trying to add `WatchlistEntry` with an integer `film_id`.
 
-**What I did:**
+**How I resolved it:**
+I opened `models.py`, kept the `WatchlistEntry` block from our branch, but changed `film_id = db.Column(db.Integer...)` to `db.String(36)` to match the new UUID format. Then I staged the file and ran `git rebase --continue`.
 
-**How I verified:**
-
-## PR Description
-<!-- Written at the end — feature overview, design decisions, manual testing steps -->
+**How I verified no conflict remains:**
+The rebase finished successfully (`Successfully rebased and updated refs/heads/feature/watchlist.`), and I ran `pytest` on the entire test suite to confirm that all 5 tests pass perfectly with the new UUID format.
