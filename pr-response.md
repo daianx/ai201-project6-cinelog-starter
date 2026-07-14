@@ -2,7 +2,15 @@
 # PR Response Doc — CineLog Watchlist Feature
 
 ## AI Usage
-<!-- Fill in at the end — how you used AI tools during this project -->
+
+During this project, I used an AI coding assistant to accelerate my learning and resolve complex git issues:
+
+- **Codebase Orientation:** I provided the AI with `models.py` and `services/collection_service.py` to get a summary of their responsibilities. It broke down how `add_to_collection()` works step-by-step, which helped me understand the deduplication and error-raising patterns before writing my own `add_to_watchlist()` function.
+- **Code Review:** I asked the AI to review the code I wrote independently, specifically checking my test cases and the logic changes in the watchlist files.
+- **Git Operations:** I utilized the AI to understand the correct interactive rebase commands necessary to rewrite my commit history and resolve the UUID merge conflict.
+- **Requirements Review:** I asked the AI to review the requirements on the grading rubric and make sure pr-response include all elements.
+
+All code modifications were written and verified by me.
 
 ## Comments
 
@@ -89,3 +97,10 @@ I opened `models.py`, kept the `WatchlistEntry` block from our branch, but chang
 
 **How I verified no conflict remains:**
 The rebase finished successfully (`Successfully rebased and updated refs/heads/feature/watchlist.`), and I ran `pytest` on the entire test suite to confirm that all 5 tests pass perfectly with the new UUID format.
+
+## Extra Features
+
+### Remove from Watchlist
+
+**What I did:**
+Implemented `remove_from_watchlist(user_id, film_id)` in `services/watchlist_service.py` to allow users to remove films from their watchlist. It follows the exact same pattern as `remove_from_collection()`. If the film isn't on the watchlist, it raises a `NotInWatchlistError`.
