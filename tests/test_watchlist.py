@@ -13,6 +13,8 @@ from services.watchlist_service import (
     get_watchlist,
     FilmNotFoundError,
     AlreadyInWatchlistError,
+    remove_from_watchlist,
+    NotInWatchlistError,
 )
 
 
@@ -39,6 +41,17 @@ def sample_user(app):
         return user.id
 
 
+@pytest.fixture
+def sample_film(app):
+    """A film to use in tests."""
+    with app.app_context():
+        import uuid
+        film_id = str(uuid.uuid4())
+        film = Film(id=film_id, title="Test Film", director="Test Director", year=2026)
+        db.session.add(film)
+        db.session.commit()
+        return film_id
+
 # ── Nonexistent film ─────────────────────────────────────────────────────────
 
 def test_add_to_watchlist_nonexistent_film_raises(app, sample_user):
@@ -51,4 +64,29 @@ def test_add_to_watchlist_nonexistent_film_raises(app, sample_user):
 
         with pytest.raises(FilmNotFoundError):
             add_to_watchlist(user_id=sample_user, film_id=fake_film_id)
+
+
+
+def test_add_duplicate_film_to_watchlist_raises(app, sample_user, sample_film):
+    """
+    Adding a film that is already on the watchlist should raise
+    AlreadyInWatchlistError.
+    """
+    with app.app_context():
+        add_to_watchlist(user_id=sample_user, film_id=sample_film)
+        with pytest.raises(AlreadyInWatchlistError):
+            add_to_watchlist(user_id=sample_user, film_id=sample_film)
+
+
+def test_remove_from_watchlist(app, sample_user, sample_film):
+    """
+    Removing a film should delete the entry. Attempting to remove a film
+    not on the watchlist should raise NotInWatchlistError.
+    """
+    with app.app_context():
+        add_to_watchlist(user_id=sample_user, film_id=sample_film)
+        assert remove_from_watchlist(user_id=sample_user, film_id=sample_film) is True
+        
+        with pytest.raises(NotInWatchlistError):
+            remove_from_watchlist(user_id=sample_user, film_id=sample_film)
 

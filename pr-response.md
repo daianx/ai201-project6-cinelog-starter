@@ -104,3 +104,11 @@ The rebase finished successfully (`Successfully rebased and updated refs/heads/f
 
 **What I did:**
 Implemented `remove_from_watchlist(user_id, film_id)` in `services/watchlist_service.py` to allow users to remove films from their watchlist. It follows the exact same pattern as `remove_from_collection()`. If the film isn't on the watchlist, it raises a `NotInWatchlistError`.
+
+### Second Test
+
+**What I did:**
+Wrote an additional test `test_add_duplicate_film_to_watchlist_raises` in `tests/test_watchlist.py` to verify duplicate entry handling. I also wrote `test_remove_from_watchlist` to verify the remove behavior.
+
+**Reasoning:**
+I chose the duplicate edge case to verify the deduplication logic that we added in Comment 2, ensuring that our `AlreadyInWatchlistError` is correctly raised when a user attempts to add the same film twice. I also wrote `test_remove_from_watchlist` to verify this behavior.
