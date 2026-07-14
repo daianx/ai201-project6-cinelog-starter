@@ -60,7 +60,7 @@ def get_watchlist(user_id):
         WatchlistEntry.query
         .filter_by(user_id=user_id)
         .join(Film)
-        .order_by(WatchlistEntry.date_added.desc())
+        .order_by(WatchlistEntry.date_added.desc()) # sort by most recently added first
         .all()
     )
 

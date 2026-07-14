@@ -58,6 +58,21 @@ Checked the model to confirm the default boolean was successfully changed. Revie
 
 ### Comment 5 — Sort order
 
+**My position:**
+Watchlists should default to "date added" (newest first).
+
+**Reasoning:**
+When a user opens their watchlist, they are usually deciding what to watch *next*. The most recently added films are usually top-of-mind and have the highest intent-to-watch, so placing them at the top makes sense.
+
+**Engagement with reviewer's point:**
+I agree with the reviewer that "Most users want to see what they added recently." While an alphabetical sort might help a user locate a specific film in a massive list, users usually want to see what they added recently. I think it is unlikely for most users to have massive lists.
+
+**What I did:**
+Changed the sort order in `get_watchlist()` in `services/watchlist_service.py` from `.order_by(Film.title.asc())` to `.order_by(WatchlistEntry.date_added.desc())`.
+
+**How I verified:**
+Checked the service implementation and ran the test suite to ensure no syntax errors were introduced.
+
 ### Comment 6 — Rebase
 
 **What conflicted:**
