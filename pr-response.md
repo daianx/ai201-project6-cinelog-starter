@@ -15,7 +15,11 @@
 | I'd prefer watchlists to default to "date added" order rather than alphabetical. Most users want to see what they added recently. I'm open to discussion if you see it differently — but let's make a decision and document it.                                                                                | Sort Order         | Write an argument for your chosen sort order (Date Added vs. Alphabetical).              |
 | A refactor merged to `main` that changed film IDs from integers to UUIDs. Your watchlist code still references integer IDs. Please rebase on `main` and update accordingly.                                                                                                                                    | Rebase             | Rebase on `main` to resolve the conflict caused by the switch from Integer IDs to UUIDs. |
 
-## PR Description
+## PR
+
+### Git Log Screenshot
+
+![git log screenshot](git-log-screenshot.png)
 
 ### Comment 1 — Rename
 
